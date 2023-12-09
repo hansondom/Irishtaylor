@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Provider as PaperProvider, Appbar, Card, Title, Paragraph } from 'react-native-paper';
-import { AsyncStorage } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export default function HomePage() {
   const [username, setUsername] = useState('');

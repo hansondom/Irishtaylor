@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from "react-native";
 import { Button, TextInput } from 'react-native-paper';
-import { AsyncStorage } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from "axios";
     
 export default function Login({ navigation }) {
@@ -12,18 +12,17 @@ export default function Login({ navigation }) {
     event.preventDefault();
   
     try {
-      const response = await axios.post(`http://192.168.137.1:1337/api/auth/local`, {
+      const response = await axios.post(`http://192.168.68.104:1337/api/auth/local`, {
         identifier: username,
         password: password,
       });
   
       if (response.status === 200) {
+        const jwt = response.data;
         await AsyncStorage.setItem("token", response.data.jwt);
         await AsyncStorage.setItem("id", JSON.stringify(response.data.user.id));
-  
-        // Store username in AsyncStorage
         await AsyncStorage.setItem("username", username);
-  
+        
         navigation.push("Home");
       } else {
         alert("Login failed");

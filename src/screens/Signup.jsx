@@ -15,14 +15,18 @@ export default function Signup ({navigation}){
       setPasswordsMatch(false);
       return;
     }
-
+    console.log(username,email,password);
     try {
-      const response = await axios.post('http://192.168.137.1:1337/auth/local/register', {
+      const response = await axios.post('http://192.168.68.104:1337/api/auth/local/register', {
         username,
         email,
         password,
+      }, {
+        headers: {
+          'Connection': 'keep-alive',
+        }
       });
-
+    
       console.log('User registered:', response.data);
       navigation.navigate('Login');
     } catch (error) {
@@ -36,7 +40,7 @@ export default function Signup ({navigation}){
         mode="outlined"
         label="Name"
         value={username}
-        onChangeText={(text) => setName(text)}
+        onChangeText={(text) => setUsername(text)}
         style={styles.input}
       />
       <TextInput
