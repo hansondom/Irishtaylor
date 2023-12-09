@@ -1,28 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Button, TextInput } from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Button, TextInput } from "react-native-paper";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-    
+
 export default function Login({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  
+
   async function handleSubmit(event) {
     event.preventDefault();
-  
+
     try {
-      const response = await axios.post(`http://192.168.68.104:1337/api/auth/local`, {
-        identifier: username,
-        password: password,
-      });
-  
+      const response = await axios.post(
+        `http://192.168.68.104:1337/api/auth/local`,
+        {
+          identifier: username,
+          password: password,
+        }
+      );
+
       if (response.status === 200) {
-        const jwt = response.data;
         await AsyncStorage.setItem("token", response.data.jwt);
         await AsyncStorage.setItem("id", JSON.stringify(response.data.user.id));
         await AsyncStorage.setItem("username", username);
-        
+
         navigation.push("Home");
       } else {
         alert("Login failed");
@@ -33,36 +35,46 @@ export default function Login({ navigation }) {
     }
   }
   function handleSignupNavigation() {
-    navigation.navigate('Signup');
+    navigation.navigate("Signup");
   }
-  
+
   return (
     <View style={styles.container}>
       <TextInput
         mode="outlined"
         dense={true}
-        label='Username'
+        label="Username"
         onChangeText={(text) => setUsername(text)}
         value={username}
-        style={{ marginVertical: 8, width: "80%", height: 40}}
+        style={{ marginVertical: 8, width: "80%", height: 40 }}
       />
       <TextInput
         mode="outlined"
         dense={true}
-        label='Password'
+        label="Password"
         onChangeText={(text) => setPassword(text)}
         value={password}
         secureTextEntry={true}
-        style={{ marginVertical: 10, width: "80%", height: 40}}
+        style={{ marginVertical: 10, width: "80%", height: 40 }}
       />
-      <Button style={{margin: 10}} icon="login" mode="contained" onPress={handleSubmit}>
+      <Button
+        style={{ margin: 10 }}
+        icon="login"
+        mode="contained"
+        onPress={handleSubmit}
+      >
         LOGIN
       </Button>
-      <Button style={{margin: 10}} icon="login" mode="contained" onPress={handleSignupNavigation}>
+      <Button
+        style={{ margin: 10 }}
+        icon="account-plus"
+        mode="contained"
+        onPress={handleSignupNavigation}
+      >
         Signup
       </Button>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -71,7 +83,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "white",
-    resizeMode: 'cover',
-    backgroundColor: 'rgba(285, 235, 255, 0.4)',
+    resizeMode: "cover",
+    backgroundColor: "rgba(285, 235, 255, 0.4)",
   },
 });
