@@ -3,8 +3,8 @@ import { View, StyleSheet, Text } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import axios from 'axios';
 
-export default function Signup (){
-  const [name, setName] = useState('');
+export default function Signup ({navigation}){
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -17,14 +17,14 @@ export default function Signup (){
     }
 
     try {
-      const response = await axios.post('http://localhost:1337/auth/local', {
-        name,
+      const response = await axios.post('http://192.168.137.1:1337/auth/local/register', {
+        username,
         email,
         password,
       });
 
       console.log('User registered:', response.data);
-      // Navigate to login or any other screen on successful signup
+      navigation.navigate('Login');
     } catch (error) {
       console.error('Signup failed:', error.message);
     }
@@ -35,7 +35,7 @@ export default function Signup (){
       <TextInput
         mode="outlined"
         label="Name"
-        value={name}
+        value={username}
         onChangeText={(text) => setName(text)}
         style={styles.input}
       />
